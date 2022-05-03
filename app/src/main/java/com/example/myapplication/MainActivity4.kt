@@ -1,57 +1,50 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.example.myapplication.databinding.ActivityMain3Binding
+import com.example.myapplication.databinding.ActivityMain4Binding
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 import kotlin.random.Random
 
-class MainActivity3 : AppCompatActivity() {
-    private lateinit var mViewBinding: ActivityMain3Binding
+class MainActivity4 : AppCompatActivity() {
+    private lateinit var mViewBinding: ActivityMain4Binding
     private lateinit var state: State
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewBinding = ActivityMain3Binding.inflate(layoutInflater)
+        mViewBinding = ActivityMain4Binding.inflate(layoutInflater)
 
         with (mViewBinding) {
             setContentView(root)
-            btnIncrement3.setOnClickListener { increment() }
-            btnColor3.setOnClickListener { setRandomColor() }
-            btnVisibility3.setOnClickListener { setVisibility() }
-            btnNext3.setOnClickListener { goNextActivity() }
+            btnIncrement4.setOnClickListener { increment() }
+            btnColor4.setOnClickListener { setRandomColor() }
+            btnVisibility4.setOnClickListener { setVisibility() }
         }
 
-        state = if (savedInstanceState == null) {
+        state = savedInstanceState?.getParcelable(KEY_STATE) ?:
             State(counterColor = ContextCompat.getColor(this, R.color.purple_700))
-        } else {
-            savedInstanceState.getSerializable(KEY_STATE) as State
-        }
 
         renderState()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable(KEY_STATE, state)
+        outState.putParcelable(KEY_STATE, state)
     }
 
     private fun renderState() {
         with (mViewBinding) {
-            tv3.text = state.counterValue.toString()
-            tv3.setTextColor(state.counterColor)
-            tv3.visibility = if (state.counterIsVisible) View.VISIBLE else View.INVISIBLE
-            btnVisibility3.text = if (!state.counterIsVisible) "Visible" else "Invisible"
+            tv4.text = state.counterValue.toString()
+            tv4.setTextColor(state.counterColor)
+            tv4.visibility = if (state.counterIsVisible) View.VISIBLE else View.INVISIBLE
+            btnVisibility4.text = if (!state.counterIsVisible) "Visible" else "Invisible"
         }
-    }
-
-    private fun goNextActivity() {
-        val intent = Intent(this, MainActivity4::class.java)
-        startActivity(intent)
     }
 
     private fun increment() {
@@ -73,11 +66,12 @@ class MainActivity3 : AppCompatActivity() {
         renderState()
     }
 
+    @Parcelize
     class State(
         var counterValue: Int = 0,
         var counterColor: Int = 0,
         var counterIsVisible: Boolean = true
-    ) : Serializable
+    ) : Parcelable
 
     companion object {
         const val KEY_STATE = "ACTIVITY_STATE"
