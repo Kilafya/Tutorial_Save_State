@@ -1,12 +1,12 @@
 package com.example.myapplication
 
-    import androidx.appcompat.app.AppCompatActivity
-    import android.os.Bundle
-    import androidx.activity.viewModels
-    import androidx.core.content.ContextCompat
-    import androidx.lifecycle.Observer
-    import com.example.myapplication.databinding.ActivityMain5Binding
-    import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import com.example.myapplication.databinding.ActivityMain5Binding
+import android.view.View
 
     class MainActivity5 : AppCompatActivity() {
         private lateinit var mViewBinding: ActivityMain5Binding
@@ -22,16 +22,19 @@ package com.example.myapplication
                 btnVisibility5.setOnClickListener { viewModel.setVisibility() }
             }
 
-            if (viewModel.state.value == null) {
-                viewModel.initState(
-                    MainActivity5ViewModel.State(
+            viewModel.initState(savedInstanceState?.getParcelable(KEY_STATE) ?:
+                MainActivity5ViewModel.State(
                     counterColor = ContextCompat.getColor(this, R.color.purple_700)
                 ))
-            }
 
             viewModel.state.observe(this, Observer {
                 renderState()
             })
+        }
+
+        override fun onSaveInstanceState(outState: Bundle) {
+            super.onSaveInstanceState(outState)
+            outState.putParcelable(KEY_STATE, viewModel.state.value)
         }
 
         private fun renderState() {
@@ -43,5 +46,9 @@ package com.example.myapplication
                     btnVisibility5.text = if (!it.counterIsVisible) "Visible" else "Invisible"
                 }
             }
+        }
+
+        companion object {
+            const val KEY_STATE = "ACTIVITY_STATE"
         }
     }

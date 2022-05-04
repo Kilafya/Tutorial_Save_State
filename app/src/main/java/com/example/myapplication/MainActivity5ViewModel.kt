@@ -1,9 +1,11 @@
 package com.example.myapplication
 
 import android.graphics.Color
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.android.parcel.Parcelize
 import kotlin.random.Random
 
 class MainActivity5ViewModel : ViewModel() {
@@ -40,9 +42,10 @@ class MainActivity5ViewModel : ViewModel() {
         )
     }
 
+    @Parcelize
     data class State(
         val counterValue: Int = 0,
         val counterColor: Int = 0,
         val counterIsVisible: Boolean = true
-    )
+    ): Parcelable
 }
