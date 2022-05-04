@@ -1,15 +1,14 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivityMain4Binding
 import kotlinx.android.parcel.Parcelize
-import java.io.Serializable
 import kotlin.random.Random
 
 class MainActivity4 : AppCompatActivity() {
@@ -25,6 +24,7 @@ class MainActivity4 : AppCompatActivity() {
             btnIncrement4.setOnClickListener { increment() }
             btnColor4.setOnClickListener { setRandomColor() }
             btnVisibility4.setOnClickListener { setVisibility() }
+            btnNext4.setOnClickListener { goNextActivity() }
         }
 
         state = savedInstanceState?.getParcelable(KEY_STATE) ?:
@@ -36,6 +36,11 @@ class MainActivity4 : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(KEY_STATE, state)
+    }
+
+    private fun goNextActivity() {
+        val intent = Intent(this, MainActivity5::class.java)
+        startActivity(intent)
     }
 
     private fun renderState() {
